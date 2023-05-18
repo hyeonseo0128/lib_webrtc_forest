@@ -16,6 +16,7 @@ import sys
 import time
 
 drone = ''
+host = ''
 
 lib_mqtt_client = None
 broker_ip = 'localhost'
@@ -31,7 +32,7 @@ driver = None
 display = None
 
 
-def openWeb(roomId):
+def openWeb(webrtcAddr, gcs, drone):
     global status
     global display
     global driver
@@ -54,7 +55,7 @@ def openWeb(roomId):
     driver = webdriver.Chrome(service=Service('/usr/lib/chromium-browser/chromedriver'), options=chrome_options,
                               desired_capabilities=capabilities)
 
-    driver.get("https://webrtc.vadadx.com:8443/?roomId={0}".format(roomId))
+    driver.get("https://webrtc.vadadx.com:8443/?roomId={0}".format(drone))
     control_web()
 
 
@@ -78,7 +79,7 @@ def msw_mqtt_connect(server):
     lib_mqtt_client.on_subscribe = on_subscribe
     lib_mqtt_client.on_message = on_message
     lib_mqtt_client.connect(server, 1883)
-    control_topic = '/MUV/control/lib_webrtc_forest/Control'
+    control_topic = '/MUV/control/lib_webrtc_crow/Control'
     lib_mqtt_client.subscribe(control_topic, 0)
 
     lib_mqtt_client.loop_start()
@@ -111,7 +112,7 @@ def on_message(client, userdata, msg):
             print('recieved ON message')
             if flag == 0:
                 flag = 1
-                openWeb(drone)
+                openWeb(host, gcs, drone)
             elif flag == 1:
                 flag = 0
             status = 'ON'
@@ -125,13 +126,14 @@ def on_message(client, userdata, msg):
 
 
 if __name__ == '__main__':
-    drone = argv[1]  # argv[1]  {{Drone_Name}} : "drone_name"
+    host = argv[1]  # argv[1]  # {{WebRTC_URL}} : "webrtc.server.com:7598"
+    drone = argv[2]  # argv[2]  # {{Drone_Name}} : "drone_name"
+    gcs = argv[3]  # argv[3]  # {{GCS_Name}} : "gcs_name"
 
     time.sleep(1)
 
-    openWeb(drone)
+    openWeb(host, gcs, drone)
     status = 'ON'
     flag = 1
 
-# python3 -m PyInstaller -F lib_webrtc_forest.py
-
+# python3 -m PyInstaller -F lib_webrtc_crow.py
