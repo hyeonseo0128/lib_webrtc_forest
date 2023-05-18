@@ -1,5 +1,5 @@
-# lib_webrtc_crow
-This repo runs 'WebRTC' using the chrome driver on a Mission Computer called CROW based on Raspberry Pi.
+# lib_webrtc_forest
+This repo runs 'WebRTC' using the chrome driver on a Mission Computer based on Raspberry Pi.
 ***
 ### 1. Install
 - `Chrome Driver` - WebDriver for running WebRTC
@@ -17,9 +17,9 @@ pip3 install -r requirements.txt
 
 
 ### 2. Run
-- `lib_webrtc_crow.py` - The arguments are WebRTC_URL and Drone_Name.
+- `lib_webrtc_forest.py` - The arguments are WebRTC_URL and Drone_Name.
 ```shell
-python3 lib_webrtc_crow.py {{WebRTC_URL}} {{Drone_Name}}
+python3 lib_webrtc_crow.py {{WebRTC_URL}} {{Drone_Name}} {{gcs_name}}
 ```
 
 
@@ -30,5 +30,5 @@ pip3 install pyinstaller
 ```
 - Convert
 ```shell
-python3 -m PyInstaller -F lib_webrtc_crow.py 
+python3 -m PyInstaller -F lib_webrtc_forest.py 
 ```
